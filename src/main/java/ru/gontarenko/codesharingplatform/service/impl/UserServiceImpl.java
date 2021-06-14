@@ -6,7 +6,12 @@ import org.springframework.stereotype.Service;
 import ru.gontarenko.codesharingplatform.enitity.User;
 import ru.gontarenko.codesharingplatform.exception.MyUserException;
 import ru.gontarenko.codesharingplatform.repository.UserRepository;
+import ru.gontarenko.codesharingplatform.secutrity.AccountStatus;
+import ru.gontarenko.codesharingplatform.secutrity.AccountType;
 import ru.gontarenko.codesharingplatform.service.UserService;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,6 +30,22 @@ public class UserServiceImpl implements UserService {
             throw new MyUserException("Email already taken");
         }
         user.setDefaultSettingsForNewUser(passwordEncoder.encode(user.getPassword()));
+        userRepo.save(user);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepo.findAllByAccountTypeIsNotOrderById(AccountType.ADMIN);
+    }
+
+    @Override
+    public void changeUserStatus(Long userId, AccountStatus accountStatus) {
+        Optional<User> byId = userRepo.findById(userId);
+        if (byId.isEmpty()) {
+            return;
+        }
+        User user = byId.get();
+        user.setAccountStatus(accountStatus);
         userRepo.save(user);
     }
 }

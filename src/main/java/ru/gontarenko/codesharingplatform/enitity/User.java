@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "user_table")
@@ -48,6 +49,9 @@ public class User implements UserDetails {
     @Column(name = "status")
     @Enumerated(value = EnumType.ORDINAL)
     private AccountStatus accountStatus;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<CodeSnippet> codeSnippets;
 
     public User() {}
 
@@ -165,5 +169,13 @@ public class User implements UserDetails {
 
     public void setAccountStatus(AccountStatus accountStatus) {
         this.accountStatus = accountStatus;
+    }
+
+    public List<CodeSnippet> getCodeSnippets() {
+        return codeSnippets;
+    }
+
+    public void setCodeSnippets(List<CodeSnippet> codeSnippets) {
+        this.codeSnippets = codeSnippets;
     }
 }
