@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <title>Code Sharing Platform</title>
+</head>
+<body>
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img style="height: 45px;" th:src="@{/img/favikon.png}" src="../static/img/favikon.png" alt="no fv">
+        Code Sharing Platform
+      </a>
+      <a class="navbar-brand" href="/snippet/new">New paste</a>
+      <div class="" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Menu
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown" sec:authorize="isAuthenticated()">
+              <li><a class="dropdown-item" href="/profile">Profile</a></li>
+              <li><a class="dropdown-item" href="/profile/edit">Edit profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <form class="dropdown-item" action="/auth/logout" method="POST">
+                  <button class="dropdown-item" type="submit">Logout</button>
+                </form>
+              </li>
+            </ul>
+            <ul class="dropdown-menu" sec:authorize="!(isAuthenticated())">
+              <li><a class="dropdown-item" href="/auth/login">login</a></li>
+              <li><a class="dropdown-item" href="/auth/registration">registration</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<section>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-6">
+        <p class="fs-2">Hello there! Here you can register and share your code for free.</p>
+      </div>
+      <div class="col-6">
+        <img th:src="@{/img/logo.png}" src="../static/img/logo.png" class="w-100" alt="no logo">
+      </div>
+    </div>
+  </div>
+
+  <div class="row align-items-center">
+    <div class="col">
+      <p class="fs-2 text-center">Here is last ten public snippets:  </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <table class="table table-bordered ">
+      <thead class="table-dark">
+      <tr>
+        <th scope="col" class="col-8">NAME / TITLE</th>
+        <th scope="col" class="col">POSTED</th>
+        <th scope="col" class="col-1">SYNTAX</th>
+      </tr>
+      </thead>
+      <tbody>
+<!--      <tr th:each="codeSnippet : ${snippetList}">-->
+<!--        <th scope="row"><a th:href="@{/snippet/{link}(link=${codeSnippet.getLink()})}" th:text="${codeSnippet.getTitle()}"></a></th> &lt;!&ndash; или внутри th &ndash;&gt;-->
+<!--        <td th:text="${codeSnippet.getDateCreate()}"></td>-->
+<!--        <td th:text="${codeSnippet.getProgrammingLanguage().getName()}"></td>-->
+<!--      </tr>-->
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+</body>
+</html>

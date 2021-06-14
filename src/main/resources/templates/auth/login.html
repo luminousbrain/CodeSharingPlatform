@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <title>Login page</title>
+
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="row mt-4">
+    <div class="col-3"></div>
+    <aside class="col">
+      <div class="card">
+        <article class="card-body">
+          <a href="/auth/registration" class="float-right btn btn-outline-primary">Sign up</a>
+          <h4 class="card-title ">Sign in</h4>
+          <form method="post" action="/auth/login">
+            <div class="form-group">
+              <label>Your email</label>
+              <input id="username" name="username" class="form-control" placeholder="Email" type="email" required>
+            </div>
+            <div class="form-group">
+              <label>Your password</label>
+              <input id="password" name="password" class="form-control" placeholder="******" type="password">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block"> Login  </button>
+            </div>
+          </form>
+        </article>
+      </div>
+    </aside>
+    <div class="col-3"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+</body>
+</html>
