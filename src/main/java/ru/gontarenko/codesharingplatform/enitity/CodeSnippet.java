@@ -40,6 +40,24 @@ public class CodeSnippet {
 
     public CodeSnippet() {}
 
+    @Override
+    public String toString() {
+        return "CodeSnippet{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", hidden=" + hidden +
+                ", link='" + link + '\'' +
+                ", dateCreate='" + dateCreate + '\'' +
+                ", expirationTime=" + expirationTime +
+                ", user=" + user +
+                ", programmingLanguage=" + programmingLanguage +
+                '}';
+    }
+
+
+    // getters, setters
+
     public Long getId() {
         return id;
     }
@@ -94,5 +112,21 @@ public class CodeSnippet {
 
     public void setExpirationTime(Integer expirationTime) {
         this.expirationTime = expirationTime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public ProgrammingLanguage getProgrammingLanguage() {
+        return programmingLanguage;
+    }
+
+    public void setProgrammingLanguage(ProgrammingLanguage programmingLanguage) {
+        this.programmingLanguage = programmingLanguage;
     }
 }

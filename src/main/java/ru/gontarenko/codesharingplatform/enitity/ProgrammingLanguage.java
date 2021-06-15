@@ -8,18 +8,18 @@ public class ProgrammingLanguage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_lang")
-    private Long id;
+    private Short id;
 
     @Column(name = "lang_name")
     private String name;
 
     public ProgrammingLanguage() {}
 
-    public Long getId() {
+    public Short getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Short id) {
         this.id = id;
     }
 

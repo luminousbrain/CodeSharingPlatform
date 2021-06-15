@@ -109,6 +109,11 @@ public class User implements UserDetails {
                 '}';
     }
 
+    public boolean getPrivacyStatus() {
+        String accType = this.getAccountType().toString();
+        return accType.equals("PRO") || accType.equals("ADMIN");
+    }
+
     // getters and setters (можно убрать с помощью Lombok)
 
     public Long getId() {
@@ -132,7 +137,11 @@ public class User implements UserDetails {
     }
 
     public String getNickname() {
-        return nickname;
+       if (nickname == null || nickname.trim().equals("")) {
+           return "No nickname";
+       } else {
+           return nickname;
+       }
     }
 
     public void setNickname(String nickname) {
