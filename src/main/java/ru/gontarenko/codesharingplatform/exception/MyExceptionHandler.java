@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice(annotations = Controller.class)
-public class ExceptionHandlerController {
+public class MyExceptionHandler {
 
     @ExceptionHandler(value = { SnippetException.class })
     public String snippetExceptionHandle(SnippetException e) {

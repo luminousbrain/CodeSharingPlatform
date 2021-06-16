@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title>Users</title>
+    <title>Code Sharing Platform</title>
 </head>
 <body>
 
@@ -19,11 +20,10 @@
             <div class="" id="navbarScroll">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown"
-                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Menu
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                        <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown" sec:authorize="isAuthenticated()">
                             <li><a class="dropdown-item" href="/profile">Profile</a></li>
                             <li><a class="dropdown-item" href="/profile/edit">Edit profile</a></li>
                             <li><hr class="dropdown-divider"></li>
@@ -33,6 +33,10 @@
                                 </form>
                             </li>
                         </ul>
+                        <ul class="dropdown-menu" sec:authorize="!(isAuthenticated())">
+                            <li><a class="dropdown-item" href="/auth/login">login</a></li>
+                            <li><a class="dropdown-item" href="/auth/registration">registration</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -40,35 +44,33 @@
     </nav>
 </header>
 
+<section>
+    <div class="row align-items-center">
+        <div class="col">
+            <p class="fs-2 text-center">Here is user snippets: </p>
+        </div>
+    </div>
+</section>
 
-<section th:if="${!(userList.isEmpty())}">
+<section>
     <div class="container">
-        <br>
-        <h2 class="text-center">Users Table</h2>
-        <br>
         <table class="table table-bordered ">
             <thead class="table-dark">
             <tr>
-                <th scope="col" class="col-1">Id</th>
-                <th scope="col" class="col">Email</th>
-                <th scope="col" class="col-2">To User Snippets</th>
-                <th scope="col" class="col-2">BAN/UNBAN</th>
+                <th scope="col" class="col-8">NAME / TITLE</th>
+                <th scope="col" class="col">POSTED</th>
+                <th scope="col" class="col-1">SYNTAX</th>
+                <th scope="col" class="col-1">DELETE</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${userList}">
-                <td th:text="${user.getId()}"></td>
-                <td th:text="${user.getEmail()}"></td>
-                <td><a th:href="@{/admin/users/{id}/snippets(id=${user.getId()})}">User snippets</a></td>
-
-                <td th:if="${user.getAccountStatus().toString().equals('ACTIVE')}">
-                    <form th:method="PATCH" th:action="@{/admin/ban/{id}(id=${user.getId()})}">
-                        <input class="btn btn-danger" type="submit" value="BAN">
-                    </form>
-                </td>
-                <td th:if="${user.getAccountStatus().toString().equals('BANNED')}">
-                    <form th:method="PATCH" th:action="@{/admin/unban/{id}(id=${user.getId()})}">
-                        <input class="btn btn-success" type="submit" value="UNBAN">
+            <tr th:each="snippet : ${userSnippets}">
+                <th scope="row"><a th:href="@{/snippet/{link}(link=${snippet.getLink()})}" th:text="${snippet.getTitle()}"></a></th>
+                <td th:text="${snippet.getDateCreate()}"></td>
+                <td th:text="${snippet.getProgrammingLanguage().getName()}"></td>
+                <td> <!-- th:if="${canDelete}" -->
+                    <form th:method="DELETE" th:action="@{/snippet/{link}(link=${snippet.getLink()})}">
+                        <input type="submit" value="Delete">
                     </form>
                 </td>
             </tr>

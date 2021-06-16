@@ -7,15 +7,15 @@ import ru.gontarenko.codesharingplatform.secutrity.AccountStatus;
 import java.util.List;
 
 public interface UserService {
-    void save(User user) throws MyUserException;
+    User findById(Long id);
 
     List<User> findAll();
 
-    void changeUserStatus(Long userId, AccountStatus accountStatus);
-
-    User findById(Long id);
-
     void update(User user);
 
+    void changeUserStatus(Long userId, AccountStatus accountStatus);
+
     void buyPro(User user);
+
+    void save(User user) throws MyUserException;
 }

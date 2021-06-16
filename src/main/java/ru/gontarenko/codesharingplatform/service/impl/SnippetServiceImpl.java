@@ -9,6 +9,7 @@ import ru.gontarenko.codesharingplatform.enitity.CodeSnippet;
 import ru.gontarenko.codesharingplatform.enitity.User;
 import ru.gontarenko.codesharingplatform.exception.SnippetException;
 import ru.gontarenko.codesharingplatform.repository.SnippetRepository;
+import ru.gontarenko.codesharingplatform.secutrity.AccountType;
 import ru.gontarenko.codesharingplatform.service.SnippetService;
 
 import java.time.Duration;
@@ -26,11 +27,6 @@ public final class SnippetServiceImpl implements SnippetService {
     @Autowired
     public SnippetServiceImpl(SnippetRepository snippetRepository) {
         this.snippetRepository = snippetRepository;
-    }
-
-    @Override
-    public List<CodeSnippet> findAll() {
-        return snippetRepository.findAllByHiddenOrderByDateCreateDesc(false);
     }
 
     @Override
@@ -59,6 +55,21 @@ public final class SnippetServiceImpl implements SnippetService {
     }
 
     @Override
+    public List<CodeSnippet> findAll() {
+        return snippetRepository.findAllByHiddenOrderByDateCreateDesc(false);
+    }
+
+    @Override
+    public List<CodeSnippet> findPublicSnippetsByUser(User user) {
+        return snippetRepository.findAllByUserAndHiddenOrderByDateCreateDesc(user, false);
+    }
+
+    @Override
+    public List<CodeSnippet> findAllByUser(User user) {
+        return snippetRepository.findAllByUserOrderByDateCreateDesc(user);
+    }
+
+    @Override
     public void save(CodeSnippet snippet, BindingResult bindingResult) {
         if (snippetRepository.existsByLink(snippet.getLink())) {
             throw new SnippetException("link already taken");
@@ -79,19 +90,9 @@ public final class SnippetServiceImpl implements SnippetService {
         Optional<CodeSnippet> byLink = snippetRepository.findByLink(link);
         if (byLink.isPresent()) {
             CodeSnippet snippet = byLink.get();
-            if (snippet.getUser().getId().equals(user.getId())) {
+            if (snippet.getUser().getId().equals(user.getId()) || user.getAccountType().equals(AccountType.ADMIN)) {
                 snippetRepository.delete(snippet);
             }
         }
-    }
-
-    @Override
-    public List<CodeSnippet> findPublicSnippetsByUser(User user) {
-        return snippetRepository.findAllByUserAndHiddenOrderByDateCreateDesc(user, false);
-    }
-
-    @Override
-    public List<CodeSnippet> findAllByUser(User user) {
-        return snippetRepository.findAllByUserOrderByDateCreateDesc(user);
     }
 }

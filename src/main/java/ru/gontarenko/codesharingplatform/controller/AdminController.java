@@ -8,22 +8,25 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.gontarenko.codesharingplatform.secutrity.AccountStatus;
+import ru.gontarenko.codesharingplatform.service.SnippetService;
 import ru.gontarenko.codesharingplatform.service.UserService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     private final UserService userService;
+    private final SnippetService snippetService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, SnippetService snippetService) {
         this.userService = userService;
+        this.snippetService = snippetService;
     }
 
     @GetMapping("/users")
     public String adminUsersPage(Model model) {
         model.addAttribute("userList", userService.findAll());
-        return "admin/admin_users";
+        return "admin/users";
     }
 
     @PatchMapping("/ban/{id}")
@@ -39,8 +42,8 @@ public class AdminController {
     }
 
     @GetMapping("/users/{id}/snippets")
-    public String userSnippets(@PathVariable Long id) {
-        System.out.println("User id = " + id);
-        return "admin/admin_user_snippets";
+    public String userSnippets(@PathVariable Long id, Model model) {
+        model.addAttribute("userSnippets", snippetService.findAllByUser(userService.findById(id)));
+        return "admin/user_snippets";
     }
 }

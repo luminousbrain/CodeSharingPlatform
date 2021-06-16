@@ -25,17 +25,24 @@ public final class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User user) throws MyUserException {
-        if (userRepo.existsByEmail(user.getEmail())) {
-            throw new MyUserException("Email already taken");
-        }
-        user.setDefaultSettingsForNewUser(passwordEncoder.encode(user.getPassword()));
-        userRepo.save(user);
+    public User findById(Long id) {
+        return userRepo.findById(id).orElseThrow(
+                () -> new MyUserException("User not found")
+        );
     }
 
     @Override
     public List<User> findAll() {
         return userRepo.findAllByAccountTypeIsNotOrderById(AccountType.ADMIN);
+    }
+
+    @Override
+    public void update(User user) {
+        try {
+            userRepo.save(user);
+        } catch (Exception e) {
+            throw new MyUserException("Nickname already taken");
+        }
     }
 
     @Override
@@ -50,24 +57,17 @@ public final class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id) {
-        return userRepo.findById(id).orElseThrow(
-                () -> new MyUserException("User not found")
-        );
-    }
-
-    @Override
-    public void update(User user) {
-        try {
-            userRepo.save(user);
-        } catch (Exception e) {
-            throw new MyUserException("Nickname already taken");
-        }
-    }
-
-    @Override
     public void buyPro(User user) {
         user.setAccountType(AccountType.PRO);
+        userRepo.save(user);
+    }
+
+    @Override
+    public void save(User user) throws MyUserException {
+        if (userRepo.existsByEmail(user.getEmail())) {
+            throw new MyUserException("Email already taken");
+        }
+        user.setDefaultSettingsForNewUser(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
     }
 }
