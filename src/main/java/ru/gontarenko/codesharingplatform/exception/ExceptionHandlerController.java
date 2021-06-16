@@ -9,6 +9,10 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(value = { SnippetException.class })
     public String snippetExceptionHandle(SnippetException e) {
+        String message = e.getMessage();
+        if (message.equals("snippet was expired")) {
+            return "snippet/snippet_expired";
+        }
         return "not_found";
     }
 

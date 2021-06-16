@@ -1,5 +1,6 @@
 package ru.gontarenko.codesharingplatform.service.impl;
 
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -10,6 +11,7 @@ import ru.gontarenko.codesharingplatform.exception.SnippetException;
 import ru.gontarenko.codesharingplatform.repository.SnippetRepository;
 import ru.gontarenko.codesharingplatform.service.SnippetService;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -33,9 +35,27 @@ public final class SnippetServiceImpl implements SnippetService {
 
     @Override
     public CodeSnippet findByLink(String link) {
-        return snippetRepository.findByLink(link).orElseThrow(
+        CodeSnippet snippet = snippetRepository.findByLink(link).orElseThrow(
                 () -> new SnippetException("not found")
         );
+        if (!checkExpirationTime(snippet)) {
+            throw new SnippetException("snippet was expired");
+        }
+        return snippet;
+    }
+
+    private boolean checkExpirationTime(CodeSnippet snippet) {
+        if (snippet.getExpirationTime() != null) {
+            long timeBetween = Duration.between(
+                    LocalDateTime.parse(snippet.getDateCreate(), formatter),
+                    LocalDateTime.now()
+            ).toSeconds();
+            if(snippet.getExpirationTime() - timeBetween <= 0) {
+                snippetRepository.delete(snippet);
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
