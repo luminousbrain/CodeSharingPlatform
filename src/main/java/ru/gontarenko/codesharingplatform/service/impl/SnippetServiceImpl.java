@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SnippetServiceImpl implements SnippetService {
+public final class SnippetServiceImpl implements SnippetService {
     private final SnippetRepository snippetRepository;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
@@ -49,7 +49,6 @@ public class SnippetServiceImpl implements SnippetService {
         }
         snippetRepository.save(snippet);
         if (snippet.getLink() == null || snippet.getLink().equals("")) {
-
             snippet.setLink(String.valueOf(snippet.getId()));
             snippetRepository.save(snippet);
         }
@@ -64,5 +63,15 @@ public class SnippetServiceImpl implements SnippetService {
                 snippetRepository.delete(snippet);
             }
         }
+    }
+
+    @Override
+    public List<CodeSnippet> findPublicSnippetsByUser(User user) {
+        return snippetRepository.findAllByUserAndHiddenOrderByDateCreateDesc(user, false);
+    }
+
+    @Override
+    public List<CodeSnippet> findAllByUser(User user) {
+        return snippetRepository.findAllByUserOrderByDateCreateDesc(user);
     }
 }

@@ -12,4 +12,10 @@ public interface UserService {
     List<User> findAll();
 
     void changeUserStatus(Long userId, AccountStatus accountStatus);
+
+    User findById(Long id);
+
+    void update(User user);
+
+    void buyPro(User user);
 }

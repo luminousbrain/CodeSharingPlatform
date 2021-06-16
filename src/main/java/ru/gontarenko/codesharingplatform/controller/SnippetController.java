@@ -23,12 +23,10 @@ import java.util.List;
 @RequestMapping("/snippet")
 public class SnippetController {
     private final SnippetService snippetService;
-    private final ProgramingLanguageRepository programingLanguageRepo;
     private final List<ProgrammingLanguage> programmingLanguages;
 
     @Autowired
     public SnippetController(ProgramingLanguageRepository programingLanguageRepo, SnippetService snippetService) {
-        this.programingLanguageRepo = programingLanguageRepo;
         this.snippetService = snippetService;
         programmingLanguages = programingLanguageRepo.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
@@ -66,8 +64,9 @@ public class SnippetController {
     }
 
     @PostMapping("/new")
-    public String createSnippet(@ModelAttribute("snippet") @Valid CodeSnippet snippet,
-                                BindingResult bindingResult
+    public String createSnippet(
+            @ModelAttribute("snippet") @Valid CodeSnippet snippet,
+            BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
             return "snippet/snippet_new";
@@ -87,6 +86,6 @@ public class SnippetController {
             @AuthenticationPrincipal User user
     ) {
         snippetService.delete(link, user);
-        return "redirect:/home";
+        return "redirect:/profile";
     }
 }

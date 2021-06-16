@@ -14,4 +14,8 @@ public interface SnippetService {
     void save(CodeSnippet snippet, BindingResult bindingResult);
 
     void delete(String link, User user);
+
+    List<CodeSnippet> findPublicSnippetsByUser(User user);
+
+    List<CodeSnippet> findAllByUser(User user);
 }

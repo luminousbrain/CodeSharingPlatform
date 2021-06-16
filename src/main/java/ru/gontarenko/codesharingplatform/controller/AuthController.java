@@ -34,8 +34,10 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public String tryRegister(@ModelAttribute("user") @Valid User user,
-                              BindingResult bindingResult) {
+    public String tryRegister(
+            @ModelAttribute("user") @Valid User user,
+            BindingResult bindingResult
+    ) {
         if (bindingResult.hasErrors()) {
             return "auth/registration";
         }

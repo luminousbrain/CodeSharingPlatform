@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+public final class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
 
@@ -46,6 +46,28 @@ public class UserServiceImpl implements UserService {
         }
         User user = byId.get();
         user.setAccountStatus(accountStatus);
+        userRepo.save(user);
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepo.findById(id).orElseThrow(
+                () -> new MyUserException("User not found")
+        );
+    }
+
+    @Override
+    public void update(User user) {
+        try {
+            userRepo.save(user);
+        } catch (Exception e) {
+            throw new MyUserException("Nickname already taken");
+        }
+    }
+
+    @Override
+    public void buyPro(User user) {
+        user.setAccountType(AccountType.PRO);
         userRepo.save(user);
     }
 }

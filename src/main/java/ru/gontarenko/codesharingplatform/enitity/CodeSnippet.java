@@ -55,7 +55,6 @@ public class CodeSnippet {
                 '}';
     }
 
-
     // getters, setters
 
     public Long getId() {

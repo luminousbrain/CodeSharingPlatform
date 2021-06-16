@@ -26,12 +26,12 @@ public class User implements UserDetails {
     private String email;
 
     @NotEmpty(message = "Password should not be empty")
-    @Length(min = 6, message = "Password must be greater than 6 characters")
+    @Length(min = 5, message = "Password must be greater than 5 characters")
     @Column(name = "password")
     private String password;
 
     @Column(name = "nickname")
-    @Length(max = 25, message = "nickname length must be no more than 500 characters")
+    @Length(max = 25, message = "nickname length must be no more than 25 characters")
     private String nickname;
 
     @Column(name = "description")
@@ -52,6 +52,14 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<CodeSnippet> codeSnippets;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "favorite_user_lang",
+            joinColumns = @JoinColumn(name = "id_user"),
+            inverseJoinColumns = @JoinColumn(name = "id_lang")
+    )
+    private List<ProgrammingLanguage> programmingLanguages;
 
     public User() {}
 
@@ -90,7 +98,7 @@ public class User implements UserDetails {
     }
 
     public void setDefaultSettingsForNewUser(String encodedPassword) {
-        this.setPassword(password);
+        this.setPassword(encodedPassword);
         this.setAccountStatus(AccountStatus.ACTIVE);
         this.setAccountType(AccountType.FREE);
     }
@@ -186,5 +194,13 @@ public class User implements UserDetails {
 
     public void setCodeSnippets(List<CodeSnippet> codeSnippets) {
         this.codeSnippets = codeSnippets;
+    }
+
+    public List<ProgrammingLanguage> getProgrammingLanguages() {
+        return programmingLanguages;
+    }
+
+    public void setProgrammingLanguages(List<ProgrammingLanguage> programmingLanguages) {
+        this.programmingLanguages = programmingLanguages;
     }
 }

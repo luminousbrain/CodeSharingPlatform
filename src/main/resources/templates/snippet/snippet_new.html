@@ -68,17 +68,18 @@
       <div>
         <label for="programming_lang">Chose programming language: </label>
         <select class="form-select m-2" th:field="*{programmingLanguage}" style="width: 200px;" id="programming_lang" aria-label="Default select example">
-          <option th:each="progLang : ${progLangList}" th:value="${progLang.getId()}" th:text="${progLang.getName()}"></option>
-<!--          <option th:value="1">Java</option>-->
-<!--          <option th:value="2">C#</option>-->
-<!--          <option th:value="3">C++</option>-->
-<!--          <option th:value="4">C</option>-->
-<!--          <option th:value="5">JS</option>-->
-<!--          <option th:value="6">HTML</option>-->
-<!--          <option th:value="7">CSS</option>-->
-<!--          <option th:value="8">Python</option>-->
-<!--          <option th:value="9">Ruby</option>-->
-<!--          <option th:value="10">Swift</option>-->
+<!--          <option th:each="progLang : ${progLangList}" th:value="${progLang.getId()}" th:text="${progLang.getName()}"></option>-->
+          <option th:value="0">None</option>
+          <option th:value="1">Java</option>
+          <option th:value="2">C#</option>
+          <option th:value="3">C++</option>
+          <option th:value="4">C</option>
+          <option th:value="5">JS</option>
+          <option th:value="6">HTML</option>
+          <option th:value="7">CSS</option>
+          <option th:value="8">Python</option>
+          <option th:value="9">Ruby</option>
+          <option th:value="10">Swift</option>
         </select>
       </div>
       <div>

@@ -9,6 +9,11 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(value = { SnippetException.class })
     public String snippetExceptionHandle(SnippetException e) {
-        return "not_found"; // return view
+        return "not_found";
+    }
+
+    @ExceptionHandler(value = { MyUserException.class })
+    public String myUserExceptionHandle(MyUserException e) {
+        return "not_found";
     }
 }
