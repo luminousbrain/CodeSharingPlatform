@@ -68,7 +68,7 @@
                 <th scope="row"><a th:href="@{/snippet/{link}(link=${snippet.getLink()})}" th:text="${snippet.getTitle()}"></a></th>
                 <td th:text="${snippet.getDateCreate()}"></td>
                 <td th:text="${snippet.getProgrammingLanguage().getName()}"></td>
-                <td> <!-- th:if="${canDelete}" -->
+                <td>
                     <form th:method="DELETE" th:action="@{/snippet/{link}(link=${snippet.getLink()})}">
                         <input type="submit" value="Delete">
                     </form>
